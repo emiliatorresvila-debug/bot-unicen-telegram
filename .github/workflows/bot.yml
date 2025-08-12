@@ -1,8 +1,8 @@
-name: Ejecutar bot cada 30 minutos
+name: Ejecutar bot cada 10 minutos
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 jobs:
