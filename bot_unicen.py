@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from telegram import Bot
-import time
 import os
 import json
 
@@ -23,7 +22,7 @@ def guardar_vistos(vistos):
         json.dump(list(vistos), f)
 
 def obtener_publicaciones():
-    r = requests.get(URL)
+    r = requests.get(URL, timeout=10)
     soup = BeautifulSoup(r.text, "html.parser")
     publicaciones = []
     for item in soup.select("div.views-row"):
@@ -37,20 +36,20 @@ def obtener_publicaciones():
 def avisar_nuevos(vistos):
     publicaciones = obtener_publicaciones()
     nuevos = [p for p in publicaciones if p[0] not in vistos]
-    
+
     for titulo, link in nuevos:
         mensaje = f"📢 Nueva publicación:\n[{titulo}]({link})"
         bot.send_message(chat_id=CHAT_ID, text=mensaje, parse_mode="Markdown")
-    
+
     vistos.update([p[0] for p in nuevos])
     return vistos
 
 def main():
+    print("Iniciando ejecución del bot...")
     vistos = cargar_vistos()
-    while True:
-        vistos = avisar_nuevos(vistos)
-        guardar_vistos(vistos)
-        time.sleep(300)  # Espera 5 minutos
+    vistos = avisar_nuevos(vistos)
+    guardar_vistos(vistos)
+    print("Bot finalizado correctamente.")
 
 if __name__ == "__main__":
     main()
