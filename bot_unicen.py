@@ -5,31 +5,18 @@ import os
 
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
-URL = "https://www.econ.unicen.edu.ar/alumnos/ale/ofertas-ale-y-optativas?title=&page=0"
 
 bot = Bot(token=TELEGRAM_TOKEN)
 
-def obtener_publicaciones():
-    r = requests.get(URL, timeout=10)
-    soup = BeautifulSoup(r.text, "html.parser")
-    publicaciones = []
-    for item in soup.select("div.views-row"):
-        titulo_tag = item.select_one("div.views-field-title a")
-        if titulo_tag:
-            titulo = titulo_tag.text.strip()
-            link = "https://www.econ.unicen.edu.ar" + titulo_tag["href"]
-            publicaciones.append((titulo, link))
-    return publicaciones
-
 def avisar_nuevos(_):
-    publicaciones = obtener_publicaciones()
-    if publicaciones:
-        titulo, link = publicaciones[0]
-        mensaje = f"📢 Nueva publicación:\n[{titulo}]({link})"
-        bot.send_message(chat_id=CHAT_ID, text=mensaje, parse_mode="Markdown")
+    mensaje = "🧪 Mensaje de prueba para verificar que el bot funciona."
+    bot.send_message(chat_id=CHAT_ID, text=mensaje)
 
 def main():
     print("Iniciando ejecución del bot...")
+    print(f"TELEGRAM_TOKEN: {'OK' if TELEGRAM_TOKEN else 'NO definido'}")
+    print(f"CHAT_ID: {'OK' if CHAT_ID else 'NO definido'}")
+
     avisar_nuevos(None)
     print("Bot finalizado correctamente.")
 
