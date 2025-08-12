@@ -1,0 +1,30 @@
+name: Ejecutar bot cada 30 minutos
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # Cada 30 minutos
+  workflow_dispatch:        # También permite ejecutarlo manualmente
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar repositorio
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+
+    - name: Instalar dependencias
+      run: |
+        pip install -r requirements.txt
+
+    - name: Ejecutar bot
+      env:
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        CHAT_ID: ${{ secrets.CHAT_ID }}
+      run: |
+        python bot.py
