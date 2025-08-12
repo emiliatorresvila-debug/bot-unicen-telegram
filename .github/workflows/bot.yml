@@ -13,10 +13,8 @@ jobs:
     - name: Clonar repositorio
       uses: actions/checkout@v3
 
-    - name: Ver directorio actual y listar archivos
-      run: |
-        pwd
-        ls -la
+    - name: Listar archivos y carpetas
+      run: ls -la
 
     - name: Configurar Python
       uses: actions/setup-python@v4
@@ -24,7 +22,13 @@ jobs:
         python-version: '3.11'
 
     - name: Instalar dependencias
-      run: pip install -r requirements.txt
+      run: |
+        pip install -r requirements.txt
+        pip list
+        which python
+
+    - name: Mostrar versión de Python
+      run: python --version
 
     - name: Ejecutar bot
       env:
