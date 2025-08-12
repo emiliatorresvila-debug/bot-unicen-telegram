@@ -13,8 +13,10 @@ jobs:
     - name: Clonar repositorio
       uses: actions/checkout@v3
 
-    - name: Listar archivos y carpetas
-      run: ls -R
+    - name: Ver directorio actual y listar archivos
+      run: |
+        pwd
+        ls -la
 
     - name: Configurar Python
       uses: actions/setup-python@v4
